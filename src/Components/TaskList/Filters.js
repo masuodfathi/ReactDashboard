@@ -1,45 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { updateFilter } from '../../Redux/Actions';
 
-const Filters = () => {
-  // State for selected filter values
-  const [selectedStatus, setSelectedStatus] = useState('All');
-  const [selectedPriority, setSelectedPriority] = useState('All');
+const Filter = ({ filter, onFilterChange }) => {
 
-  // Handler for status filter change
-  const handleStatusChange = (e) => {
-    setSelectedStatus(e.target.value);
-    // You can perform additional actions based on the selected status
-  };
-
-  // Handler for priority filter change
-  const handlePriorityChange = (e) => {
-    setSelectedPriority(e.target.value);
-    // You can perform additional actions based on the selected priority
+  const handleFilterChange = (e) => {
+    const filterValue = e.target.value;
+    // Call the Redux action to update the filter criteria
+    onFilterChange(filterValue);
   };
 
   return (
-    <div className="filters">
-      <label>
-        Status:
-        <select value={selectedStatus} onChange={handleStatusChange}>
-          <option value="All">All</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Completed">Completed</option>
-          <option value="Pending">Pending</option>
-        </select>
-      </label>
-
-      <label>
-        Priority:
-        <select value={selectedPriority} onChange={handlePriorityChange}>
-          <option value="All">All</option>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-        </select>
-      </label>
+    <div className="filter mt-4 mb-3">
+      <h2>Filter</h2>
+      <label htmlFor="filterSelect" className="form-label">Select Status:</label>
+      <select id="filterSelect" value={filter} onChange={handleFilterChange} className="form-select">
+        <option value="all">All</option>
+        <option value="completed">Completed</option>
+        <option value="pending">Pending</option>
+      </select>
     </div>
   );
 };
 
-export default Filters;
+const mapDispatchToProps = (dispatch) => ({
+  onFilterChange: (filter) => dispatch(updateFilter(filter)),
+});
+
+export default connect(null, mapDispatchToProps)(Filter);

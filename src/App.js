@@ -1,27 +1,30 @@
 import './App.css';
-import React, { useState } from 'react';
+
+import { Provider } from 'react-redux';
+import store from './Redux/Store';
+
 import TaskList from './Components/TaskList/TaskList';
 import Sidebar from './Components/SideBar/Sidebar';
+import Filter from './Components/TaskList/Filters';
+import TaskForm from './Components/TaskList/TaskForm';
+
 
 function App() {
 
-  const [tasks, setTasks] = useState([
-    { id: 1, title: 'Task 1', description: 'Description of Task 1', dueDate: '2024-01-31', completed: false },
-    // Add more tasks as needed
-  ]);
-
-  const updateTask = (updatedTask) => {
-    const updatedTasks = tasks.map((task) =>
-      task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-    );
-    setTasks(updatedTasks);
-  };
 
   return (
-    <div className="app-container">
-      <Sidebar />
-      <TaskList tasks={tasks} updateTask={updateTask} />
-    </div>
+    <Provider store={store}>
+      <div className="container-fluid">
+        <div className="row">
+          <Sidebar />
+          <div className="col-lg-9 col-md-8 col-sm-12">
+            <Filter />
+            <TaskList />
+            <TaskForm />
+          </div>
+        </div>
+      </div>
+    </Provider>
   );
 }
 
